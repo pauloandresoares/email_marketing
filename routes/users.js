@@ -2,49 +2,41 @@ let express = require('express');
 let router = express.Router();
 let User = require('../src/models/user');
 let cfg = require('./../config');
+let jwt = require('jwt-simple');
+let passport = require('../src/auth/auth');
 
 router.post('/token', function(req, res, next){
   let user = req.body;
   if(!user.username || !user.password){
       return res.status(401).send('Unauthorized');
   }
-  
-  let query = {email: user.username, password:user.password};
-  
-  let callback = function(err, user){
-    if(err){
-      return err;
-    }
-    return user;
-  };
-  let userData = User.findOne(query, callback);
-  if(!userData){
-    return res.status(401).send('Unauthorized');
-  }
-  let payload = {is: userData.id};
-  let token = jwt.encode(payload, cfg.jwrSecret);
-  return res.json({token: token});
 
-});
-
-/* GET users listing. */
-router.get('/me', function(req, res, next) {
-  //5a21f51e0f2b53000f30fca8
+  let query = {email: user.username, password: user.password};
   
   let callback = function(err, user){
     if(err){
       return res.status(500).json({err: err});
     }
-
     if(!user){
-      return res.status(404).json({user: null});
+      return res.status(401).send('Unauthorized');
     }
-
-    return res.status(200).json({user: user});
+    console.log('User:');
+    console.log(user.id);
+    let payload = {id: user.id};
+    let token = jwt.encode(payload, cfg.jwrSecret);
+    return res.json({token: token});
   };
+  user = User.findOne(query, callback);
 
-  User.findById('5a21f51e0f2b53000f30fca8', callback);
 
+});
+
+/* GET users listing. */
+router.get('/me', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+  ////5a21f51e0f2b53000f30fca8
+  return res.status(200).json({
+    user: req.user
+  });
 });
 
 router.post('/register', function(req, res, next) {
@@ -55,7 +47,7 @@ router.post('/register', function(req, res, next) {
     accounts:[{
       name: req.body.account_name,
       role: 'owner',
-      ennabled: true,
+      enabled: true,
     }]
   };
 

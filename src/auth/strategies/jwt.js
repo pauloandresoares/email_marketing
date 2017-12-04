@@ -7,18 +7,20 @@ let cfg = require('../../../config');
 
 let params = {
     secretOrKey: cfg.jwrSecret,
-    jwtFromRequest: passportExtractJwt.fromAuthHeaderWithScheme('bearer')
+    jwtFromRequest: passportExtractJwt.fromAuthHeaderAsBearerToken()
 };
 
 let strategy = new passportJwtStrategy(params, function(jwt_payload, done){
-    let query = {id: jwt_payload.sub};
+    let id = jwt_payload.id;
     let callback =  function(err, user){
         if(err){
             return done(err);
         }
         return done(null, user);
     };
-    User.findOne(query, callback);
+    console.log('jwt');
+    console.log(id);
+    User.findById(id, callback);
 
 });
 
