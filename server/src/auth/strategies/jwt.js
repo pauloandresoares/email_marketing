@@ -18,8 +18,6 @@ let strategy = new passportJwtStrategy(params, function(jwt_payload, done){
         }
         return done(null, user);
     };
-    console.log('jwt');
-    console.log(id);
     User.findById(id, callback);
 
 });
