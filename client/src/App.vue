@@ -4,92 +4,120 @@
       <ul class="side-nav">
         <li>
           <div class="user-view">
-            <img src="http://www.motsandco.com/wp-content/uploads/avatar-1-300x300.png"/>
+            <img src="http://www.motsandco.com/wp-content/uploads/avatar-1-300x300.png"  class="circle"/>
             <span>User</span>
           </div>
         </li>
+        <li><a href=""><i class="material-icons">home</i></a></li>
+        <li><a href=""><i class="material-icons">email</i></a></li>
+        <li><a href=""><i class="material-icons">supervisor_account</i></a></li>
+        <li><a href=""><i class="material-icons">lock</i></a></li>
+        <li><a href=""><i class="material-icons">exit_to_app</i></a></li>
       </ul>
     </menu>
     <section id="page">
-        <header id="header">
-          <ul id="dropdown1" class="dropdown-content">
-            <li><a href="">Opção 1</a></li>
-            <li><a href="">Opção 1</a></li>
-          </ul>
-          <nav class="row light-blue">
-            <div class="nav-wrapper col s12">
-              <a href="" class="brand-logo hide-on-med-and-down">FireLabs Email Marketing</a>
-              <a href="" class="brand-logo hide-on-large-only">FEM</a>
-              <ul id="nav-mobile" class="right">
-                <li>
-                  <a href="" class="dropdown-button" data-activates="dropdown1">
-                    <i class="material-icons black-text">notications_active</i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </header>
-        <main id="content">
-          <section class="row">
-            <div class="col s12">
-              <router-view></router-view>
-            </div>
-          </section>
-        </main>
-        <footer id="footer" class="row grey lighten-3">
-          <div class="col s12">
-            <small>By Firelabs</small>
+      <header id="header">
+        <ul id="dropdown1" class="dropdown-content">
+          <li><a href="">temos 2 novos leads</a></li>
+          <li><a href="">sua companha teve novos clicks</a></li>
+        </ul>
+        <nav class="row light-blue">
+          <div class="nav-wrapper col s12">
+            <a href="" class="brand-logo hide-on-med-and-down">Digital Marketing</a>
+            <a href="" class="brand-logo hide-on-large-only">DM</a>
+            <ul id="nav-mobile" class="right" >
+              <li><a href="" class="dropdown-button" data-activates="dropdown1">
+                <i class="material-icons black-text">notifications_active</i>
+              </a></li>
+            </ul>
           </div>
-        </footer>
+        </nav>
+      </header>
+      <main id="content">
+        <section class="row">
+          <div class="col s12">
+            <router-view></router-view>
+          </div>
+        </section>
+      </main>
+      <footer id="footer" class="row grey lighten-3">
+        <div class="col s12">
+          <small>By Firelabs</small>
+        </div>
+      </footer>
     </section>
   </div>
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
-  name: 'app'
+  name: 'app',
+  mounted () {
+    $('.dropdown-button').dropdown({
+      belowOrigin: true
+    })
+  }
 }
 </script>
 
 <style>
-@import 'https://fonts.googleapis.com/icon?family=material+icons';
-
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 body {
   background-color: #fafafa !important;
-}  
-
+}
 #page {
   display: flex;
-  min-height: 100%;
+  min-height: 100vh;
   flex-direction: column;
 }
-
-#footer{
+#footer {
   width: 100%;
-  margin-bottom:0!important;
-  position:fixed;
-  bottom: 0;
+  margin-bottom: 0;
 }
-
-main{
+main {
   flex: 1 0 auto;
 }
-
 #menu {
   text-align: center;
   padding: 0;
   margin: 0;
 }
-
 #menu .user-view .material-icons {
   display: block;
   font-size: 60px;
 }
-
 #menu .side-nav, #menu .side-nav li>a>i.material-icons {
   text-align: center;
   color: inherit;
+}
+#menu .side-nav li>a>i.material-icons {
+  float: none;
+  display: inline-block;
+  margin: 0;
+  font-size: 30px;
+}
+#menu .side-nav li>a {
+  border: 1px solid #424242;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  color: #9e9e9e;
+}
+#menu .side-nav li>a:hover {
+  color: #757575;
+  background-color: #000
+}
+#menu .side-nav {
+  transform: translateX(0);
+  width: 150px;
+  background-color: #212121;
+  color: #9e9e9e;
+}
+#menu + #page {
+  margin-left: 150px;
+}
+#dropdown1 {
+  width: 200px !important;
 }
 
 </style>
