@@ -10,6 +10,10 @@ import 'materialize-css/dist/css/materialize.min.css'
 
 Vue.config.productionTip = false
 
+var VueTruncate = require('vue-truncate-filter')
+Vue.use(VueTruncate)
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

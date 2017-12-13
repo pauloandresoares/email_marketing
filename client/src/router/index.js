@@ -6,12 +6,13 @@ import store from '@/states'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
       name: 'Hello',
-      component: Hello
+      component: Hello,
+      meta: {requiresAuth: true}
     },
     {
       path: '/login',
@@ -19,4 +20,25 @@ export default new Router({
       component: Login
     }
   ]
+})
+
+export default router
+
+router.beforeEach((to, from, next) => {
+  let requiresAuth = to.meta.requiresAuth || false
+  let token = store.state.user.token
+  if(token){
+    window.axios.defaults.headers.common['Authorization'] = 'bearer '+token
+  }
+
+  if(requiresAuth) {
+    return store.dispatch('getCurrentUser')
+    .then(() => {
+      return next()
+    })
+    .catch(() => {
+      return next({path: 'login'})
+    })
+  }
+  return next()
 })

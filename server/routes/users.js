@@ -30,7 +30,10 @@ router.post('/token', function(req, res, next){
 });
 
 /* GET users listing. */
-router.get('/me', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+//passport.authenticate('jwt', { session: false })
+router.get('/me', passport.authenticate('jwt', { session: false }), function (req, res, next) {
+    console.log('/me');  
+    console.log(req.user);
   return res.status(200).json({
     user: req.user
   });

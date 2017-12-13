@@ -1,11 +1,11 @@
 <template>
   <div>
-    <menu type="contex" id="menu">
+    <menu type="contex" id="menu" v-if="me">
       <ul class="side-nav">
         <li>
           <div class="user-view">
             <img src="http://www.motsandco.com/wp-content/uploads/avatar-1-300x300.png"  class="circle"/>
-            <span>User</span>
+            <span>{{ me.user.name  | truncate(10,' ') }}</span>
           </div>
         </li>
         <li><a href=""><i class="material-icons">home</i></a></li>
@@ -25,7 +25,7 @@
           <div class="nav-wrapper col s12">
             <a href="" class="brand-logo hide-on-med-and-down">Digital Marketing</a>
             <a href="" class="brand-logo hide-on-large-only">DM</a>
-            <ul id="nav-mobile" class="right" >
+            <ul id="nav-mobile" v-if="me" class="right" >
               <li><a href="" class="dropdown-button" data-activates="dropdown1">
                 <i class="material-icons black-text">notifications_active</i>
               </a></li>
@@ -53,6 +53,11 @@
 import $ from 'jquery'
 export default {
   name: 'app',
+  computed: {
+    me () {
+      return this.$store.state.user.me
+    }
+  },
   mounted () {
     $('.dropdown-button').dropdown({
       belowOrigin: true

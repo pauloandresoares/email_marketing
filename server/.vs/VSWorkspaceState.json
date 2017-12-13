@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\bin",
+    "\\public",
+    "\\routes",
+    "\\src",
+    "\\src\\auth",
+    "\\src\\auth\\strategies",
+    "\\src\\db",
+    "\\src\\models"
+  ],
+  "SelectedNode": "\\routes\\users.js",
+  "PreviewInSolutionExplorer": false
+}
