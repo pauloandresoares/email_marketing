@@ -2,6 +2,7 @@
 ## Projeto utilizado para teste das tecnologias Node.js, MongoDB e Vue.js
 
 **1 - instalar o express, e criar o projeto**
+Verificar versão
 ```sh
 node --v
 npm --v
@@ -707,8 +708,13 @@ app.use('/users', users);
 ```
 
 Terceiro adicionar as linhas
+```javascript
+const routers = require('./src/routers')
+```
 
-
+```javascript
+routers(app);
+```
 
 # DICAS VUE
 
