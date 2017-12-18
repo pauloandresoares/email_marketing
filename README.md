@@ -688,10 +688,26 @@ module.exports = function(app){
 	
 ***[index.js]***
 ```javascript
+const passport = require('../auth/auth');
+
 let auth = require('./auth');
+let lists = require('./lists');
+let campaigns = require('./campaigns');
+let leads = require('./leads');
 
 module.exports = (app) => {
+
+    /* GET home page. */
+    app.get('/', function(req, res) {
+        res.render('index', { title: 'Express' });
+    });
+    
+    app.use('/api', passport.authenticate('jwt', {session: false}));
+
     auth(app);
+    lists(app);
+    campaigns(app);
+    leads(app);
 }
 ```
 
@@ -717,6 +733,131 @@ const routers = require('./src/routers')
 routers(app);
 ```
 
+**14 - Estrutura de CRUD generico**
+
+Criar o arquivo server/src/service/crud.js: 
+
+```javascript
+function CrudService (model){
+    this.model = model;
+}
+
+CrudService.prototype.list = function () {
+    return new Promise((resolve, reject) => {
+        this.model.find(null, (err, result) => {
+            return resolve({data: result});
+        })
+    })
+}
+
+
+CrudService.prototype.insert = function (data) {
+    return new Promise((resolve, reject) => {
+        this.model.create(data, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+
+CrudService.prototype.get = function (id) {
+    return new Promise((resolve, reject) => {
+        this.model.findById(id, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+
+CrudService.prototype.update = function (data) {
+    return new Promise((resolve, reject) => {
+        this.model.findByIdAndUpdate(id, {$set: data}, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+CrudService.prototype.delete = function (id) {
+    return new Promise((resolve, reject) => {
+        this.model.findByIdAndRemove(id, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+
+module.exports = CrudService;
+```
+
+Criar o arquivo server/src/controller/generic.js:
+```javascript
+function CrudService (model){
+    this.model = model;
+}
+
+CrudService.prototype.list = function () {
+    return new Promise((resolve, reject) => {
+        this.model.find(null, (err, result) => {
+            return resolve({data: result});
+        })
+    })
+}
+
+
+CrudService.prototype.insert = function (data) {
+    return new Promise((resolve, reject) => {
+        this.model.create(data, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+
+CrudService.prototype.get = function (id) {
+    return new Promise((resolve, reject) => {
+        this.model.findById(id, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+
+CrudService.prototype.update = function (data) {
+    return new Promise((resolve, reject) => {
+        this.model.findByIdAndUpdate(id, {$set: data}, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+CrudService.prototype.delete = function (id) {
+    return new Promise((resolve, reject) => {
+        this.model.findByIdAndRemove(id, (err, result)=> {
+            if (err) {
+                return reject({err: err});
+            }     
+            return resolve({data: result});
+         });
+    })
+}
+
+module.exports = CrudService;
+```
+
 # DICAS VUE
 
 Instalar o truncate
@@ -727,7 +868,6 @@ Adicionar o código
 ```javascript
 var VueTruncate = require('vue-truncate-filter')
 Vue.use(VueTruncate)
-
 ```
 Como usar o trucate
 ```vue
