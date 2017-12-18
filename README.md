@@ -858,6 +858,7 @@ CrudService.prototype.delete = function (id) {
 module.exports = CrudService;
 ```
 
+
 # ESTRUTURA PRONTA  - CRIAR UM CRUD BASICO
 ## SERVER
 **1 - Criar modelo:**
@@ -996,13 +997,13 @@ let router = new Router({
 //--
 ```
 
-# DICAS VUE
+# DICAS VUE E EXPRESS
 
-Instalar o truncate
+## Instalar o truncate no vue
 ```sh
 npm install vue-truncate-filter --save
 ```
-Adicionar o código
+Adicionar o código no aruivo /client/src/main.js
 ```javascript
 var VueTruncate = require('vue-truncate-filter')
 Vue.use(VueTruncate)
@@ -1012,5 +1013,31 @@ Como usar o trucate
  {{ text | truncate(100) }}
 ```
 
+## Instalar e utilizar o express validator 
+Instalar:
+```sh
+npm install express-validator --save
+```
+Habilitar o componente, editando o arquivo server/app.js:
+```javascript
+const validator = require('express-validator')
+app.use(validator)
+```
+Como utilizar:
+```javascript
+//...
+module.exports = function (app) {
+    const controller = new GenericController(model);
 
+    controller.subscribe = async function (req, res) {
+        req.checkBody('email', 'Enter a valid email').isEmail(); //faz a validação se é email valido
+        req.checkBody('list', 'List is required').exists(); //faz a validação se está preenchido
+
+        let errors = req.validationErrors();
+        if (errors) {
+            return res.status(422).json(errors); //lança o erro
+        }
+
+//...
+```
 
