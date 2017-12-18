@@ -858,6 +858,144 @@ CrudService.prototype.delete = function (id) {
 module.exports = CrudService;
 ```
 
+# ESTRUTURA PRONTA  - CRIAR UM CRUD BASICO
+## SERVER
+**1 - Criar modelo:**
+Criar arquivo no diretório server/src/models, como o exemplo do user.js 
+```javascript
+let mongoose = require('mongoose');
+
+let User = mongoose.Schema({
+    name: String,
+    email: { type: String, unique: true},
+    password: String,
+    accounts:[{
+        name: String,
+        role: String,
+        enabled: Boolean    
+    }]
+});
+module.exports = mongoose.model('User', User);
+```
+**2 - Criar controller:**
+Criar controller no diretório server/src/controller, seguinto o exemplo do list.js, substituindo as referencias do 'list' para o objeto desejado
+```javascript
+const model = require('../models/list');
+const CrudService  = require('../services/crud');
+const GenericController  = require('./generic');
+const service = new CrudService(model);
+
+module.exports = function (app) {
+    const controller = new GenericController(model);
+    return controller;
+}
+```
+**3 - Criar rotas:**
+
+Criar rotas no diretório server/src/routers, seguinto o exemplo do lists.js, substituindo as referencias do 'list' para o objeto 
+```javascript
+let auth = require('./auth');
+
+module.exports = function (app) {
+    const controller = require('../controllers/lists')(app);
+    
+    app.get('/api/lists', controller.index);
+    app.post('/api/lists', controller.add);
+    app.get('/api/lists/:id', controller.view);
+    app.put('/api/lists/:id', controller.edit);
+    app.delete('/api/lists/:id', controller.delete);
+
+}
+```
+## CLIENT
+
+**1 - Criar modulo do VUE.JS**
+
+Criar o arquivo do modulo no diretório: 'client/src/states/modules' ,como o exemplo do list: 
+```javascript
+export default {
+    state: {
+      lists: [],
+      list: {}
+    },
+    mutations: {
+      updateLists (state, data) {
+        state.lists = data
+      },
+      updateList (state, data) {
+        state.list = data
+      }
+    },
+    actions: {
+      getAllList (context) {
+        return window.axios.get('/api/lists').then((response) => {
+          context.commit('updateLists', response.data.data)
+          return response
+        })
+      }
+    }
+  }
+```
+**2 - adicionar módulo no arquivo client/src/states/index.js, seguindo os exemplos**
+```javascript
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+import user from './modules/user'
+import email from './modules/email'
+import list from './modules/list'
+import lead from './modules/lead'
+
+window.axios = require('axios')
+window.axios.defaults.baseURL = process.env.SERVER
+window.axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+
+let config = {
+  modules: {
+    user: user,
+    email: email,
+    list: list,
+    lead: lead
+  }
+}
+
+Vue.use(Vuex)
+export default new Vuex.Store(config)
+```
+**3 - Criar componente no diretório: 'client/src/components/', seguindo os exemplo encontrados no diretório desse projeto**
+
+**4 - Criar rota no arquivo client/src/router/index.js, e importar o componente criado seguindo os exemplos a seguir:**
+```javascript
+//----
+import EmailList from '@/components/email/email-list'
+import EmailNew from '@/components/email/email-new'
+import EmailView from '@/components/email/email-view'
+import EmailEdit from '@/components/email/email-edit'
+import EmailRemove from '@/components/email/email-remove'
+
+import ListsList from '@/components/lists/lists-list'
+import ListsView from '@/components/lists/lists-view'
+import Lead from '@/components/lists/lead'
+
+Vue.use(Router)
+
+let router = new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'Hello',
+      component: Hello,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/email',
+      name: 'EmailList',
+      component: EmailList,
+      meta: { requiresAuth: true }
+    },
+//--
+```
+
 # DICAS VUE
 
 Instalar o truncate
