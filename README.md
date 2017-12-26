@@ -1054,7 +1054,7 @@ Acessar o site e criar uma conta:
 **[Site do MailGun](https://www.mailgun.com/)**
 
 
-Criar o arquivo server/src/email/sender.js, alterando as chaves de acesso, de acordo com aa conta cadastrada no site do mailgun:
+Criar o arquivo server/src/email/sender.js, alterando as chaves de acesso, de acordo com a conta cadastrada no site do mailgun:
 
 ```javascript
 const mailgun = require('mailgun.js');
