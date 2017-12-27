@@ -15,7 +15,7 @@ export default {
     },
     actions: {
         getCurrentUser (context) {
-            return window.axios.get('/users/me').then((response) => {
+            return window.axios.get('/oauth/me').then((response) => {
                 console.log('getCurrentUser');
                 console.log(response.data);
                 context.commit('updateUser',response.data)
@@ -23,14 +23,14 @@ export default {
             })         
         },
         authentication (context, user) {
-            return window.axios.post('/users/token', qs.stringify(user)).then((response) => {
+            return window.axios.post('/oauth/token', qs.stringify(user)).then((response) => {
                 context.commit('updateToken', response.data.token)
                 window.localStorage.setItem('token',response.data.token)
                 return response
             })
         },
         register (context, user) {
-            return window.axios.post('/users/register', qs.stringify(user)).then((response) => {
+            return window.axios.post('/oauth/register', qs.stringify(user)).then((response) => {
                 let authData = {
                     username: user.email,
                     password: user.password

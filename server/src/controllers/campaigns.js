@@ -1,4 +1,4 @@
-const model = require('../models/list');
+const model = require('../models/campaign');
 const CrudService  = require('../services/crud');
 const GenericController  = require('./generic');
 const service = new CrudService(model);

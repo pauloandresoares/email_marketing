@@ -22,9 +22,7 @@ let Lead = mongoose.Schema({
                     link: String,
                     date: Date
                 }
-
             ]
-
         }
     ]
 });

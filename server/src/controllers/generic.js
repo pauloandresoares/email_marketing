@@ -18,14 +18,32 @@ function GenericController(model) {
                 return res.status(422).json(err);
             });
     }
-    this.view = (req, res) => {
-        return res.json({status: 'in progress'});  
-    }
+
     this.edit = (req, res) => {
-        return res.json({status: 'in progress'});  
+        this.service.update(req.params.id,req.body)
+            .then((result) => {
+                return res.json(result);     
+            }).catch((err) => {
+                return res.status(422).json(err);
+            });
     }
+
+    this.view = (req, res) => {
+        this.service.get(req.params.id)
+            .then((result) => {
+                return res.json(result);     
+            }).catch((err) => {
+                return res.status(404).json(err);
+            });
+    }
+
     this.delete = (req, res) => {
-        return res.json({status: 'in progress'});  
+        this.service.delete(req.params.id)
+            .then((result) => {
+                return res.json(result);     
+            }).catch((err) => {
+                return res.status(404).json(err);
+            });
     }
 }
 
